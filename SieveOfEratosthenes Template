@@ -1,0 +1,20 @@
+//Sieve of Eratosthenes Template for quick usage in CP Codes
+// Code by Umesh
+#define ll long long
+vector<bool> isPrime(1e8 + 1, true);
+vector<ll> primes;
+
+void ConstructSieve() {
+    isPrime[0] = isPrime[1] = false;
+    for (ll i = 2; i * i <= 1e8; i++) {
+        if (isPrime[i]) {
+            for (ll j = i * i; j <= 1e8; j += i) {
+                isPrime[j] = false;
+            }
+        }
+    }
+    primes.emplace_back(0); // Optional dummy value
+    for (int i = 0; i <= 1e8; i++) {
+        if (isPrime[i]) primes.emplace_back(i);
+    }
+}
