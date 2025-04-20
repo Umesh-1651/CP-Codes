@@ -1,0 +1,35 @@
+#define ll long long
+vector<ll> primes;
+
+void simpleSieve(int limit) {
+    vector<bool> isPrime(limit + 1, true);
+    isPrime[0] = isPrime[1] = false;
+    for (int i = 2; i * i <= limit; ++i) {
+        if (isPrime[i]) {
+            for (int j = i * i; j <= limit; j += i)
+                isPrime[j] = false;
+        }
+    }
+    for (int i = 2; i <= limit; ++i) {
+        if (isPrime[i])
+            primes.push_back(i);
+    }
+}
+
+void segmentedSieve(ll L, ll R) {
+    int limit = sqrt(R) + 1;
+    simpleSieve(limit);
+
+    vector<bool> isPrime(R - L + 1, true);
+
+    for (ll p : primes) {
+        ll start = max(p * p, ((L + p - 1) / p) * p);
+        for (ll j = start; j <= R; j += p)
+            isPrime[j - L] = false;
+    }
+
+    for (ll i = 0; i <= R - L; ++i) {
+        if (isPrime[i] && (i + L) != 1)
+            cout << (i + L) << " ";
+    }
+}
